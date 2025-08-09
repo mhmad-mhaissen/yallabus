@@ -14,7 +14,12 @@
               <template v-for="(value, key) in flattenedData" :key="key">
                 <li>
                   <strong>{{ formatKey(key) }}:</strong>
-                  <span>{{ value }}</span>
+                  <template v-if="key == 'photo'">
+                    <img class="image-fluid" :src="value" alt="" />
+                  </template>
+                  <template v-else>
+                    <span>{{ value }}</span>
+                  </template>
                 </li>
               </template>
             </ul>
@@ -186,5 +191,10 @@ header {
 .modal-fade-leave-to {
   opacity: 0;
   transform: scale(0.95);
+}
+
+.image-fluid {
+  height: 300px !important;
+  width: fit-content !important;
 }
 </style>

@@ -1,6 +1,9 @@
 <template>
   <div class="layout" v-if="$store.state.user">
-    <BaseLayout :route-title="'Change Password'">
+    <BaseLayout
+      :route-title="'Change Password'"
+      :navLinks="$store.state.NavLinks[$store.state.role]"
+    >
       <BaseForm
         title="Change Password"
         submitText="Update Password"

@@ -1,6 +1,9 @@
 <template>
   <div class="layout" v-if="$store.state.user">
-    <BaseLayout :route-title="'Edit Profile'">
+    <BaseLayout
+      :route-title="'Edit Profile'"
+      :navLinks="$store.state.NavLinks[$store.state.role]"
+    >
       <BaseForm
         title="Edit Profile"
         submitText="Save Changes"

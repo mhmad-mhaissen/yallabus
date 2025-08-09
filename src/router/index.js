@@ -12,6 +12,7 @@ import PermissionsManagement from "@/views/Dashboards/AdminDashboard/Permissions
 import CurrencyManagement from "@/views/Dashboards/AdminDashboard/CurrencyManagement.vue";
 import CountriesManagement from "@/views/Dashboards/AdminDashboard/CountriesManagement.vue";
 import CitiesManagement from "@/views/Dashboards/AdminDashboard/CitiesManagement.vue";
+import DriversView from "@/views/Dashboards/CompanyDashboard/DriversView.vue";
 
 const routes = [
   {
@@ -78,6 +79,11 @@ const routes = [
     path: "/cities",
     name: "CitiesManagement",
     component: CitiesManagement,
+  },
+  {
+    path: "/drivers",
+    name: "DriversView",
+    component: DriversView,
   },
 ];
 
