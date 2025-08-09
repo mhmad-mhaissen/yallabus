@@ -1,0 +1,189 @@
+/* variables */
+@import url(variables.css);
+
+/* fonts */
+@import url(font.css);
+
+/* style */
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.75rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+h5 {
+    font-size: 1.25rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+p {
+    margin-bottom: 1em;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text);
+}
+
+/* Links */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover,
+.link:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+/* Lists */
+ul,
+ol {
+    margin: 1em 0;
+    padding-left: 1.5em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+/* Buttons */
+.button-primary {
+    background: var(--color-primary);
+    color: white;
+    padding: 0.6em 1.2em;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.button-primary:hover {
+    background: var(--gradient-primary);
+}
+
+.button-secondary {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-muted);
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.button-secondary:hover {
+    background: var(--gradient-accent);
+    color: white;
+}
+
+/* Forms */
+input,
+textarea,
+select {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-muted);
+    padding: 0.5em;
+    font-size: 1rem;
+    border-radius: 6px;
+    color: var(--color-text);
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+
+/* Cards */
+.card {
+    background-color: var(--color-surface);
+    border-radius: 12px;
+    padding: 1.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s;
+}
+
+/* Utility Text */
+.text-muted {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+}
+
+
+.role-management {
+    padding: 1rem;
+    background: var(--color-surface);
+    border-radius: 0.75rem;
+    margin-top: 1rem;
+    color: var(--color-text);
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+}
+
+.add-btn {
+    background: var(--gradient-primary);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.loading {
+    color: var(--color-muted);
+    font-style: italic;
+}
+
+.error {
+    color: #e74c3c;
+    margin-bottom: 1rem;
+}

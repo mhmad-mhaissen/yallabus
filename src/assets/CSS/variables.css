@@ -1,0 +1,29 @@
+:root {
+    --color-bg: #dddddd;
+    --color-surface: #eeeeee;
+    --color-text: #222222;
+    --color-primary: #00A2C8;
+    --color-primary-dark: #007F9C;
+    --color-accent: #6EBE44;
+    --color-muted: #B0B0B0;
+
+    --section-overlay-color: rgba(255, 255, 255, 0.6);
+
+    --gradient-primary: linear-gradient(90deg, #00A2C8, #007F9C);
+    --gradient-accent: linear-gradient(90deg, #6EBE44, #00A2C8);
+}
+
+:root.dark {
+    --color-bg: #121212;
+    --color-surface: #1E1E1E;
+    --color-text: #eeeeee;
+    --color-primary: #00A2C8;
+    --color-primary-dark: #0090B3;
+    --color-accent: #6EBE44;
+    --color-muted: #666666;
+
+    --section-overlay-color: rgba(0, 0, 0, 0.5);
+
+    --gradient-primary: linear-gradient(90deg, #00A2C8, #007F9C);
+    --gradient-accent: linear-gradient(90deg, #6EBE44, #00A2C8);
+}
