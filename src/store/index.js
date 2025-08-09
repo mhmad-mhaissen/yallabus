@@ -9,7 +9,6 @@ export default createStore({
     error: null,
     role: null,
     role_name: null,
-    company: null,
     permissions: [],
     server: "http://127.0.0.1:8000/",
     NavLinks: {
@@ -25,13 +24,6 @@ export default createStore({
         { name: "Currencies", to: "/currencies", icon: "mdi:currency-usd" },
         { name: "Countries", to: "/countries", icon: "mdi:earth" },
         { name: "Cities", to: "/cities", icon: "mdi:city" },
-      ],
-      "company-admin": [
-        { name: "Home", to: "/dashboard", icon: "mdi:view-dashboard" },
-        { name: "Drivers", to: "/drivers", icon: "mdi:account-tie" },
-        { name: "Buses", to: "/buses", icon: "mdi:bus" },
-        { name: "Seats", to: "/seats", icon: "mdi:seat" },
-        { name: "Trips", to: "/trips", icon: "mdi:map-marker-path" },
       ],
     },
   },

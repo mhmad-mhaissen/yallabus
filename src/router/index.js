@@ -7,12 +7,6 @@ import DashboardView from "@/views/Dashboards/DashboardView.vue";
 import ShowEditProfile from "@/views/Dashboards/ProfileSettings/ShowEditProfile.vue";
 import ChangePassword from "@/views/Dashboards/ProfileSettings/ChangePassword.vue";
 import UsersManagement from "@/views/Dashboards/AdminDashboard/UsersManagement.vue";
-import RolesManagement from "@/views/Dashboards/AdminDashboard/RolesManagement.vue";
-import PermissionsManagement from "@/views/Dashboards/AdminDashboard/PermissionsManagement.vue";
-import CurrencyManagement from "@/views/Dashboards/AdminDashboard/CurrencyManagement.vue";
-import CountriesManagement from "@/views/Dashboards/AdminDashboard/CountriesManagement.vue";
-import CitiesManagement from "@/views/Dashboards/AdminDashboard/CitiesManagement.vue";
-import DriversView from "@/views/Dashboards/CompanyDashboard/DriversView.vue";
 
 const routes = [
   {
@@ -54,36 +48,6 @@ const routes = [
     path: "/users-management",
     name: "UsersManagement",
     component: UsersManagement,
-  },
-  {
-    path: "/roles",
-    name: "RolesManagement",
-    component: RolesManagement,
-  },
-  {
-    path: "/permissions",
-    name: "PermissionsManagement",
-    component: PermissionsManagement,
-  },
-  {
-    path: "/currencies",
-    name: "CurrencyManagement",
-    component: CurrencyManagement,
-  },
-  {
-    path: "/countries",
-    name: "CountriesManagement",
-    component: CountriesManagement,
-  },
-  {
-    path: "/cities",
-    name: "CitiesManagement",
-    component: CitiesManagement,
-  },
-  {
-    path: "/drivers",
-    name: "DriversView",
-    component: DriversView,
   },
 ];
 

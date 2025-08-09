@@ -33,9 +33,6 @@ export default {
     store.state.permissions = localStorage.getItem("user")
       ? store.state.user.role.permissions
       : null;
-    store.state.company = localStorage.getItem("user")
-      ? store.state.user.company
-      : null;
   },
 };
 </script>
