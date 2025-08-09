@@ -114,7 +114,8 @@ onMounted(() => {
   border-radius: 8px;
   cursor: pointer;
   background: white;
-  color: black !important;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .flag {
@@ -132,7 +133,8 @@ onMounted(() => {
   top: 100%;
   left: 0;
   z-index: 1000;
-  background: white;
+  background: var(--color-bg);
+  color: var(--color-text);
   border: 1px solid var(--color-muted);
   border-radius: 6px;
   width: 100%;
@@ -160,11 +162,12 @@ onMounted(() => {
   gap: 0.5rem;
   padding: 0.4rem 0.6rem;
   cursor: pointer;
-  color: black !important;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .option:hover {
-  background-color: #f0f0f0;
+  background-color: var(--color-surface);
 }
 
 .phone-field {

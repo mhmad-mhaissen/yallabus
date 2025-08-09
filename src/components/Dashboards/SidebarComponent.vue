@@ -309,11 +309,13 @@ export default {
   color: var(--color-text);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* allow vertical growth */
+  overflow-y: auto; /* enable vertical scroll */
 }
 
 .content-inner {
   max-width: 800px;
   width: 100%;
+  min-height: 100%;
 }
 </style>

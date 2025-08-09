@@ -32,6 +32,9 @@
             >
               View
             </button>
+
+            <!-- ✅ Custom slot for additional actions -->
+            <slot name="customActions" :item="row" />
           </td>
         </tr>
       </tbody>
@@ -114,6 +117,7 @@ function getNestedValue(obj, path) {
 .actions-cell {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .btn {

@@ -1,44 +1,49 @@
 <template>
-  <div v-if="visible" class="modal-overlay" @click.self="close">
-    <div class="modal-content" :style="{ maxWidth: maxWidth }">
-      <header>
-        <h3>{{ title }}</h3>
-        <button class="close-btn" @click="close">&times;</button>
-      </header>
+  <transition name="modal-fade">
+    <div v-if="visible" class="modal-overlay" @click.self="close">
+      <div class="modal-content" :style="{ maxWidth: maxWidth }">
+        <header>
+          <h3>{{ title }}</h3>
+          <button class="close-btn" @click="close">&times;</button>
+        </header>
 
-      <!-- View Mode -->
-      <template v-if="mode === 'view'">
-        <div v-if="data && Object.keys(data).length" class="modal-body">
-          <ul class="details-list">
-            <template v-for="(value, key) in flattenedData" :key="key">
-              <li>
-                <strong>{{ formatKey(key) }}:</strong> <span>{{ value }}</span>
-              </li>
-            </template>
-          </ul>
-        </div>
-        <div v-else class="empty-state">No data to display.</div>
-      </template>
-
-      <!-- Confirm Mode -->
-      <template v-else-if="mode === 'confirm'">
-        <div class="modal-body confirm-body">
-          <p>{{ confirmMessage }}</p>
-          <div class="modal-actions">
-            <button class="btn cancel" @click="close">Cancel</button>
-            <button class="btn confirm" @click="confirmAction">Confirm</button>
+        <!-- View Mode -->
+        <template v-if="mode === 'view'">
+          <div v-if="data && Object.keys(data).length" class="modal-body">
+            <ul class="details-list">
+              <template v-for="(value, key) in flattenedData" :key="key">
+                <li>
+                  <strong>{{ formatKey(key) }}:</strong>
+                  <span>{{ value }}</span>
+                </li>
+              </template>
+            </ul>
           </div>
-        </div>
-      </template>
+          <div v-else class="empty-state">No data to display.</div>
+        </template>
 
-      <!-- Custom Mode -->
-      <template v-else-if="mode === 'custom'">
-        <div class="modal-body">
-          <slot />
-        </div>
-      </template>
+        <!-- Confirm Mode -->
+        <template v-else-if="mode === 'confirm'">
+          <div class="modal-body confirm-body">
+            <p>{{ confirmMessage }}</p>
+            <div class="modal-actions">
+              <button class="btn cancel" @click="close">Cancel</button>
+              <button class="btn confirm" @click="confirmAction">
+                Confirm
+              </button>
+            </div>
+          </div>
+        </template>
+
+        <!-- Custom Mode -->
+        <template v-else-if="mode === 'custom'">
+          <div class="modal-body">
+            <slot />
+          </div>
+        </template>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script setup>
@@ -169,5 +174,17 @@ header {
 .btn.confirm {
   background: var(--color-danger, #e74c3c);
   color: #fff;
+}
+
+/* Animation styles */
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
 }
 </style>
