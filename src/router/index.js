@@ -15,6 +15,7 @@ import CitiesManagement from "@/views/Dashboards/AdminDashboard/CitiesManagement
 import DriversView from "@/views/Dashboards/CompanyDashboard/DriversView.vue";
 import BusesView from "@/views/Dashboards/CompanyDashboard/BusesView.vue";
 import SeatsView from "@/views/Dashboards/CompanyDashboard/SeatsView.vue";
+import TripsView from "@/views/Dashboards/CompanyDashboard/TripsView.vue";
 
 const routes = [
   {
@@ -96,6 +97,11 @@ const routes = [
     path: "/seats",
     name: "SeatsView",
     component: SeatsView,
+  },
+  {
+    path: "/trips",
+    name: "TripsView",
+    component: TripsView,
   },
 ];
 
