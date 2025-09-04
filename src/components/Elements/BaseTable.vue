@@ -32,13 +32,34 @@
             >
               View
             </button>
-
-            <!-- ✅ Custom slot for additional actions -->
             <slot name="customActions" :item="row" />
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- ✅ Pagination (only if prop provided) -->
+    <div v-if="pagination" class="pagination">
+      <button
+        class="page-btn"
+        :disabled="pagination.current_page === 1"
+        @click="changePage(pagination.current_page - 1)"
+      >
+        Prev
+      </button>
+
+      <span class="page-info">
+        Page {{ pagination.current_page }} of {{ pagination.last_page }}
+      </span>
+
+      <button
+        class="page-btn"
+        :disabled="pagination.current_page === pagination.last_page"
+        @click="changePage(pagination.current_page + 1)"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -51,28 +72,29 @@ const props = defineProps({
   keys: Array,
   data: Array,
   model: String,
+  pagination: Object, // ✅ new optional prop
 });
 
-defineEmits(["edit", "delete", "view"]);
+const emit = defineEmits(["edit", "delete", "view", "page-changed"]);
 
 const store = useStore();
-
 const permissions = computed(() => store.state.permissions || []);
 
-const can = (permission) => {
-  return permissions.value.includes(permission);
-};
+const can = (permission) => permissions.value.includes(permission);
 
-const hasActions = computed(() => {
-  return ["update_", "delete_", "read_"].some((prefix) =>
-    can(prefix + props.model)
-  );
-});
+const hasActions = computed(() =>
+  ["update_", "delete_", "read_"].some((prefix) => can(prefix + props.model))
+);
 
 function getNestedValue(obj, path) {
   return path
     .split(".")
     .reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : ""), obj);
+}
+
+// ✅ Handle pagination clicks
+function changePage(page) {
+  emit("page-changed", page);
 }
 </script>
 
@@ -128,7 +150,6 @@ function getNestedValue(obj, path) {
   cursor: pointer;
   color: #fff;
 }
-
 .btn.edit {
   background-color: var(--color-accent);
 }
@@ -137,5 +158,34 @@ function getNestedValue(obj, path) {
 }
 .btn.view {
   background-color: var(--color-primary-dark);
+}
+
+/* ✅ Pagination styles */
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.page-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--color-muted);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.page-btn:hover:not(:disabled) {
+  background: var(--color-primary-light);
+  color: #fff;
+}
+.page-info {
+  font-size: 0.9rem;
 }
 </style>

@@ -20,9 +20,11 @@
           :keys="keys"
           :data="seats"
           model="seat"
+          :pagination="pagination"
           @edit="onEditSeat"
           @delete="onDeleteSeat"
           @view="onViewSeat"
+          @page-changed="fetchSeats"
         />
       </div>
 
@@ -124,6 +126,7 @@ export default {
       keys: ["seat_number", "class", "is_available", "bus_id"],
       seats: [],
       buses: [],
+      pagination: null,
       modalMode: null,
       showModal: false,
       successMessage: "",
@@ -173,7 +176,7 @@ export default {
             ? "Seat deleted successfully."
             : "Delete failed: " + error;
           this.modalMode = "success";
-          if (success) this.fetchSeats();
+          if (success) this.fetchSeats(this.pagination?.current_page || 1);
         });
     },
     onEditSeat(seat) {
@@ -213,7 +216,7 @@ export default {
               ? "Seat created successfully."
               : "Creation failed: " + error;
             this.modalMode = "success";
-            if (success) this.fetchSeats();
+            if (success) this.fetchSeats(this.pagination?.current_page || 1);
           });
       } else if (this.modalMode === "edit") {
         await store
@@ -228,7 +231,7 @@ export default {
               ? "Seat updated successfully."
               : "Update failed: " + error;
             this.modalMode = "success";
-            if (success) this.fetchSeats();
+            if (success) this.fetchSeats(this.pagination?.current_page || 1);
           });
       }
     },
@@ -250,7 +253,7 @@ export default {
       this.modalMode = null;
       this.selectedSeat = null;
     },
-    async fetchSeats() {
+    async fetchSeats(page = 1) {
       this.loading = true;
       this.error = null;
       const {
@@ -259,12 +262,22 @@ export default {
         error: err,
       } = await store.dispatch(
         "makeGetRequest",
-        store.state.server + `api/${store.state.role}/seats`
+        store.state.server + `api/${store.state.role}/seats?page=${page}`
       );
-      if (success) this.seats = data.data.data;
-      else this.error = err || "Failed to load seats.";
+      if (success) {
+        this.seats = data.data.data;
+        this.pagination = {
+          current_page: data.data?.current_page || page,
+          last_page: data.data?.last_page || 10,
+          per_page: data.data?.per_page || 10,
+          total: data.data.total,
+        };
+      } else {
+        this.error = err || "Failed to load seats.";
+      }
       this.loading = false;
     },
+
     async fetchBuses() {
       const { success, data } = await store.dispatch(
         "makeGetRequest",
