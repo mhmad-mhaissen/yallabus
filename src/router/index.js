@@ -16,6 +16,8 @@ import DriversView from "@/views/Dashboards/CompanyDashboard/DriversView.vue";
 import BusesView from "@/views/Dashboards/CompanyDashboard/BusesView.vue";
 import SeatsView from "@/views/Dashboards/CompanyDashboard/SeatsView.vue";
 import TripsView from "@/views/Dashboards/CompanyDashboard/TripsView.vue";
+import CheckTrips from "@/views/Trips/CheckTrips.vue";
+import TripBook from "@/views/Trips/TripBook.vue";
 
 const routes = [
   {
@@ -102,6 +104,16 @@ const routes = [
     path: "/trips",
     name: "TripsView",
     component: TripsView,
+  },
+  {
+    path: "/check-trips",
+    name: "CheckTrips",
+    component: CheckTrips,
+  },
+  {
+    path: "/trip-info",
+    name: "TripBook",
+    component: TripBook,
   },
 ];
 

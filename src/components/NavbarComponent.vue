@@ -10,10 +10,10 @@
       <!-- Center Nav Links (desktop) -->
       <nav class="nav-links">
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/trips" v-if="$store.state.role == 'User'"
+        <RouterLink to="/check-trips" v-if="$store.state.role == 'user'"
           >Trips</RouterLink
         >
-        <RouterLink to="/bookings" v-if="$store.state.role == 'User'"
+        <RouterLink to="/bookings" v-if="$store.state.role == 'user'"
           >Bookings</RouterLink
         >
         <RouterLink
@@ -52,13 +52,13 @@
         <RouterLink
           to="/trips"
           @click="closeSidebar"
-          v-if="$store.state.role == 'User'"
+          v-if="$store.state.role == 'user'"
           >Trips</RouterLink
         >
         <RouterLink
           to="/bookings"
           @click="closeSidebar"
-          v-if="$store.state.role == 'User'"
+          v-if="$store.state.role == 'user'"
           >Bookings</RouterLink
         >
         <RouterLink
@@ -107,6 +107,8 @@ const Logout = () => {
   localStorage.removeItem("token");
   store.state.user = null;
   store.state.token = null;
+  store.state.role = null;
+  store.state.role_name = null;
 };
 
 onMounted(() => {

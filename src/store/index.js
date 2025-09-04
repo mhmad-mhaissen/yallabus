@@ -34,6 +34,7 @@ export default createStore({
         { name: "Trips", to: "/trips", icon: "mdi:map-marker-path" },
       ],
     },
+    trip: {},
   },
 
   getters: {

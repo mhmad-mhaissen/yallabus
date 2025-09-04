@@ -245,6 +245,10 @@ export default {
         .then(({ success, data }) => {
           if (success) {
             this.newTrip = { ...data.data };
+            this.newTrip.arrival_city_id = this.newTrip.arrival_city.id;
+            this.newTrip.bus_id = this.newTrip.bus.id;
+            this.newTrip.departure_city_id = this.newTrip.departure_city.id;
+            this.newTrip.driver_id = this.newTrip.driver.id;
             this.modalMode = "edit";
             this.showModal = true;
           }
