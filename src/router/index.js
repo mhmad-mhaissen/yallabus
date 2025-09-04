@@ -13,6 +13,8 @@ import CurrencyManagement from "@/views/Dashboards/AdminDashboard/CurrencyManage
 import CountriesManagement from "@/views/Dashboards/AdminDashboard/CountriesManagement.vue";
 import CitiesManagement from "@/views/Dashboards/AdminDashboard/CitiesManagement.vue";
 import DriversView from "@/views/Dashboards/CompanyDashboard/DriversView.vue";
+import BusesView from "@/views/Dashboards/CompanyDashboard/BusesView.vue";
+import SeatsView from "@/views/Dashboards/CompanyDashboard/SeatsView.vue";
 
 const routes = [
   {
@@ -84,6 +86,16 @@ const routes = [
     path: "/drivers",
     name: "DriversView",
     component: DriversView,
+  },
+  {
+    path: "/buses",
+    name: "BusesView",
+    component: BusesView,
+  },
+  {
+    path: "/seats",
+    name: "SeatsView",
+    component: SeatsView,
   },
 ];
 
