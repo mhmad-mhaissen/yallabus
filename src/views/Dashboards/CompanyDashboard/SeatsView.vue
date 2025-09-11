@@ -266,6 +266,10 @@ export default {
       );
       if (success) {
         this.seats = data.data.data;
+        for (let key in this.seats) {
+          this.seats[key].is_available =
+            this.seats[key].is_available == 0 ? "Booked" : "Available";
+        }
         this.pagination = {
           current_page: data.data?.current_page || page,
           last_page: data.data?.last_page || 10,

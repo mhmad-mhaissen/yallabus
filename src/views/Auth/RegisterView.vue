@@ -124,7 +124,7 @@ async function onSubmit() {
     },
   });
 
-  if (!response.success) {
+  if (response.error == "يجب التحقق من الايميل") {
     store.commit("SET_ERROR", null);
     router.push("/email-verification?email=" + email.value);
   }

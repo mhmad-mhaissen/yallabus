@@ -32,6 +32,24 @@ export default createStore({
         { name: "Buses", to: "/buses", icon: "mdi:bus" },
         { name: "Seats", to: "/seats", icon: "mdi:seat" },
         { name: "Trips", to: "/trips", icon: "mdi:map-marker-path" },
+        {
+          name: "Bookings",
+          to: "/company-bookings",
+          icon: "material-symbols:book",
+        },
+      ],
+      support: [
+        {
+          name: "Home",
+          to: "/dashboard",
+          icon: "mdi:view-dashboard",
+        },
+        {
+          name: "Complaints",
+          to: "/complaints",
+          icon: "hugeicons:complaint",
+        },
+        { name: "Reviews", to: "/reviews", icon: "carbon:review" },
       ],
     },
     trip: {},
@@ -121,6 +139,7 @@ export default createStore({
         });
         return { success: true, data: response.data };
       } catch (err) {
+        console.log(err);
         const message = err.response?.data?.message || "POST request failed.";
         commit("SET_ERROR", message);
         return { success: false, error: message };

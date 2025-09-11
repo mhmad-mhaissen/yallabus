@@ -342,12 +342,24 @@ function resetUserForm() {
   };
 }
 
+function cleanPayload(obj) {
+  const payload = {};
+  for (const key in obj) {
+    if (obj[key] !== "" && obj[key] !== null && obj[key] !== undefined) {
+      payload[key] = obj[key];
+    }
+  }
+  return payload;
+}
+
 function submitUser() {
+  const payload = cleanPayload(newUser.value);
+
   if (modalMode.value === "add") {
     store
       .dispatch("makePostRequest", {
         url: store.state.server + `api/${store.state.role}/users`,
-        data: newUser.value,
+        data: payload,
       })
       .then(({ success, error }) => {
         successMessage.value = success
@@ -362,7 +374,7 @@ function submitUser() {
         url:
           store.state.server +
           `api/${store.state.role}/users/${newUser.value.id}`,
-        data: newUser.value,
+        data: payload,
       })
       .then(({ success, error }) => {
         successMessage.value = success

@@ -62,12 +62,31 @@
             <option value="ECONOMIC">Economic</option>
           </select>
 
-          <BaseInput
-            type="textarea"
-            v-model="newBus.amenities"
-            label="Amenities"
-            placeholder="WiFi, USB chargers, AC..."
-          />
+          <!-- Dynamic Amenities -->
+          <div class="amenities-section">
+            <label>Amenities</label>
+            <div
+              v-for="(item, index) in newBus.amenities"
+              :key="index"
+              class="amenity-input"
+            >
+              <BaseInput
+                v-model="newBus.amenities[index]"
+                placeholder="e.g. WiFi"
+              />
+              <button
+                type="button"
+                class="remove-btn"
+                @click="removeAmenity(index)"
+              >
+                ❌
+              </button>
+            </div>
+
+            <button type="button" class="add-amenity" @click="addAmenity">
+              + Add Amenity
+            </button>
+          </div>
         </BaseForm>
       </GlobalModal>
 
@@ -90,7 +109,22 @@
         title="Bus Details"
         mode="view"
         @close="closeModal"
-      />
+      >
+        <ul v-if="selectedBus">
+          <li><b>Plate Number:</b> {{ selectedBus.plate_number }}</li>
+          <li><b>Model:</b> {{ selectedBus.model }}</li>
+          <li><b>Capacity:</b> {{ selectedBus.capacity }}</li>
+          <li><b>Type:</b> {{ selectedBus.type }}</li>
+          <li>
+            <b>Amenities:</b>
+            <ul>
+              <li v-for="(a, i) in selectedBus.amenities" :key="i">
+                {{ a }}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </GlobalModal>
 
       <!-- Success Modal -->
       <GlobalModal
@@ -132,7 +166,7 @@ export default {
         model: "",
         capacity: "",
         type: "",
-        amenities: "",
+        amenities: [], // now array
       },
       selectedBus: null,
     };
@@ -176,14 +210,29 @@ export default {
         )
         .then(({ success, data }) => {
           if (success) {
-            this.newBus = { ...data.data };
+            const busData = { ...data.data };
+            // Parse amenities safely
+            busData.amenities = Array.isArray(busData.amenities)
+              ? busData.amenities
+              : busData.amenities
+              ? JSON.parse(busData.amenities)
+              : [];
+            this.newBus = busData;
             this.modalMode = "edit";
             this.showModal = true;
           }
         });
     },
     onViewBus(bus) {
-      this.selectedBus = bus;
+      // ensure amenities are array for view
+      this.selectedBus = {
+        ...bus,
+        amenities: Array.isArray(bus.amenities)
+          ? bus.amenities
+          : bus.amenities
+          ? JSON.parse(bus.amenities)
+          : [],
+      };
       this.modalMode = "view";
       this.showModal = true;
     },
@@ -194,7 +243,9 @@ export default {
       formdata.append("model", this.newBus.model);
       formdata.append("capacity", this.newBus.capacity);
       formdata.append("type", this.newBus.type);
-      formdata.append("amenities", this.newBus.amenities);
+      for (let key in this.newBus.amenities) {
+        formdata.append(`amenities[${key}]`, this.newBus.amenities[key]); // array
+      }
 
       if (this.modalMode === "add") {
         await store
@@ -239,7 +290,7 @@ export default {
         model: "",
         capacity: "",
         type: "",
-        amenities: "",
+        amenities: [],
       };
     },
     closeModal() {
@@ -258,9 +309,25 @@ export default {
         "makeGetRequest",
         store.state.server + `api/${store.state.role}/buses`
       );
-      if (success) this.buses = data.data.data;
-      else this.error = err || "Failed to load buses.";
+      if (success) {
+        this.buses = data.data.data.map((bus) => ({
+          ...bus,
+          // amenities: Array.isArray(bus.amenities)
+          //   ? bus.amenities.join(", ")
+          //   : bus.amenities
+          //   ? JSON.parse(bus.amenities).join(", ")
+          //   : "",
+        }));
+      } else {
+        this.error = err || "Failed to load buses.";
+      }
       this.loading = false;
+    },
+    addAmenity() {
+      this.newBus.amenities.push("");
+    },
+    removeAmenity(index) {
+      this.newBus.amenities.splice(index, 1);
     },
   },
   mounted() {
@@ -277,5 +344,35 @@ export default {
   margin-top: 5px;
   border-radius: 6px;
   border: 1px solid #ccc;
+}
+
+.amenities-section {
+  margin-top: 15px;
+}
+
+.amenity-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.amenity-input .remove-btn {
+  margin-left: 8px;
+  background: red;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-amenity {
+  margin-top: 8px;
+  background: #007bff;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
 }
 </style>

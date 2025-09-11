@@ -1,62 +1,86 @@
 <template>
   <div class="check-trips">
-    <SectionComponent animation="fade-up">
-      <h2>Available Trips</h2>
+    <!-- 🟢 Suggestions Swiper -->
+    <div v-if="suggestions.length" class="suggestions-section">
+      <h2>Suggestions</h2>
+      <swiper
+        :slides-per-view="1"
+        :space-between="20"
+        :breakpoints="{
+          640: { slidesPerView: 1.2 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }"
+        navigation
+        pagination
+        loop
+      >
+        <swiper-slide v-for="trip in suggestions" :key="trip.id">
+          <TripCard :trips="[trip]" />
+        </swiper-slide>
+      </swiper>
+    </div>
 
-      <!-- 🔎 Advanced Search -->
-      <div class="search-form">
-        <BaseDropdown
-          v-model="filters.departure_city"
-          label="Departure City"
-          :options="departureCityOptions"
-        />
-        <BaseDropdown
-          v-model="filters.arrival_city"
-          label="Arrival City"
-          :options="arrivalCityOptions"
-        />
-        <BaseDropdown
-          v-model="filters.company"
-          label="Company"
-          :options="companyOptions"
-        />
-        <BaseInput v-model="filters.date" type="date" label="Date" />
-        <button class="reset-btn" @click="resetFilters">Reset</button>
-      </div>
+    <h2>Available Trips</h2>
 
-      <!-- Loading & Error -->
-      <div v-if="loading" class="loading">Loading Trips...</div>
-      <div v-if="error" class="error">{{ error }}</div>
+    <!-- 🔎 Advanced Search -->
+    <div class="search-form">
+      <BaseDropdown
+        v-model="filters.departure_city"
+        label="Departure City"
+        :options="departureCityOptions"
+      />
+      <BaseDropdown
+        v-model="filters.arrival_city"
+        label="Arrival City"
+        :options="arrivalCityOptions"
+      />
+      <BaseDropdown
+        v-model="filters.company"
+        label="Company"
+        :options="companyOptions"
+      />
+      <BaseInput v-model="filters.date" type="date" label="Date" />
+      <button class="reset-btn" @click="resetFilters">Reset</button>
+    </div>
 
-      <!-- Trips Grid -->
-      <div v-if="!loading && !error" class="trips-grid">
-        <TripCard :trips="filteredTrips" />
-      </div>
-    </SectionComponent>
+    <!-- Loading & Error -->
+    <div v-if="loading" class="loading">Loading Trips...</div>
+    <div v-if="error" class="error">{{ error }}</div>
+
+    <!-- Trips Grid -->
+    <div v-if="!loading && !error" class="trips-grid">
+      <TripCard :trips="filteredTrips" />
+    </div>
   </div>
 </template>
 
 <script>
 import TripCard from "@/components/Elements/TripCard.vue";
-import SectionComponent from "@/components/SectionComponent.vue";
 import BaseInput from "@/components/Elements/BaseInput.vue";
 import BaseDropdown from "@/components/Elements/BaseDropdown.vue";
 import store from "@/store";
+
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export default {
   name: "check-trips",
   components: {
     TripCard,
-    SectionComponent,
     BaseInput,
     BaseDropdown,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
       loading: false,
       error: null,
-      allTrips: [], // keep full dataset
-      trips: [], // currently displayed (may use pagination later)
+      allTrips: [], // full dataset
+      suggestions: [], // suggested trips
       filters: {
         departure_city: "",
         arrival_city: "",
@@ -66,7 +90,6 @@ export default {
     };
   },
   computed: {
-    // Extract unique options from trips
     departureCityOptions() {
       const unique = [
         ...new Set(
@@ -138,6 +161,15 @@ export default {
 
       this.loading = false;
     },
+    async fetchSuggestions() {
+      const { success, data } = await store.dispatch(
+        "makeGetRequest",
+        store.state.server + `api/trips/suggestions`
+      );
+      if (success) {
+        this.suggestions = data.data || [];
+      }
+    },
     resetFilters() {
       this.filters = {
         departure_city: "",
@@ -149,6 +181,7 @@ export default {
   },
   mounted() {
     this.fetchTrips();
+    this.fetchSuggestions();
   },
 };
 </script>
@@ -156,6 +189,14 @@ export default {
 <style scoped>
 .check-trips {
   padding: 1rem;
+}
+
+/* 🟢 Suggestions */
+.suggestions-section {
+  margin-bottom: 2rem;
+}
+.suggestions-section h2 {
+  margin-bottom: 1rem;
 }
 
 /* 🔎 Search Form */

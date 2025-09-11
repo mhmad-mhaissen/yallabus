@@ -76,6 +76,7 @@
             v-model="newTrip.price"
             label="Price"
             placeholder="e.g. 50.00"
+            v-if="modalMode == 'add'"
           />
           <BaseInput
             type="number"
