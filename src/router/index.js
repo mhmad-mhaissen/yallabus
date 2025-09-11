@@ -18,6 +18,7 @@ import SeatsView from "@/views/Dashboards/CompanyDashboard/SeatsView.vue";
 import TripsView from "@/views/Dashboards/CompanyDashboard/TripsView.vue";
 import CheckTrips from "@/views/Trips/CheckTrips.vue";
 import TripBook from "@/views/Trips/TripBook.vue";
+import WalletView from "@/views/Wallet/WalletView.vue";
 
 const routes = [
   {
@@ -114,6 +115,11 @@ const routes = [
     path: "/trip-info",
     name: "TripBook",
     component: TripBook,
+  },
+  {
+    path: "/my-wallet",
+    name: "WalletView",
+    component: WalletView,
   },
 ];
 
