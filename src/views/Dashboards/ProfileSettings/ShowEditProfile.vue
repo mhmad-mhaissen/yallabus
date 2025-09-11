@@ -63,6 +63,7 @@
             :disabled="form.company_contact_phone == null"
           />
         </template>
+        <h6>Balance: {{ $store.state.user.balance }}</h6>
       </BaseForm>
     </BaseLayout>
   </div>
@@ -153,13 +154,23 @@ const updateProfile = async () => {
         company_contact_phone: form.value.company_contact_phone,
       },
     });
-
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    store.state.token = null;
-    store.state.user = null;
+    fetchMe();
   } catch (err) {
     console.error("Failed to update profile:", err);
+  }
+
+  async function fetchMe() {
+    const { success, data, error } = await store.dispatch(
+      "makeGetRequest",
+      store.state.server + "api/user/me"
+    );
+
+    if (success) {
+      store.state.user = data.data;
+      localStorage.setItem("user", JSON.stringify(data.data));
+    } else {
+      console.error("Failed to fetch profile:", error);
+    }
   }
 };
 </script>

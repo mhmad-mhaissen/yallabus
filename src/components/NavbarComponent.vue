@@ -16,10 +16,11 @@
         <RouterLink to="/bookings" v-if="$store.state.role == 'user'"
           >Bookings</RouterLink
         >
-        <RouterLink
-          to="/dashboard"
-          v-else-if="$store.state.role != 'User' && $store.state.token != null"
+        <RouterLink to="/dashboard" v-if="$store.state.token != null"
           >Dashboard</RouterLink
+        >
+        <RouterLink to="/my-wallet" v-if="$store.state.role == 'user'"
+          >Add Cash</RouterLink
         >
         <RouterLink to="/login" v-if="$store.state.token == null"
           >Login</RouterLink

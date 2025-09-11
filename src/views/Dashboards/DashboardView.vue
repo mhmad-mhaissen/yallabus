@@ -37,12 +37,19 @@
 
 <script>
 import SidebarLayout from "@/components/Dashboards/SidebarComponent.vue";
+import router from "@/router";
+import store from "@/store";
 import { Icon } from "@iconify/vue";
 
 export default {
   components: {
     SidebarLayout,
     Icon,
+  },
+  mounted() {
+    if (store.state.role == "user") {
+      router.push("/profile");
+    }
   },
 };
 </script>

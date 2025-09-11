@@ -7,8 +7,12 @@
       </h2>
       <p class="trip-company">Company: {{ trip.company?.name }}</p>
       <p class="trip-date">Departure: {{ formatDate(trip.departure_time) }}</p>
+      <p class="trip-price">Price: {{ Number(trip.price).toLocaleString() }}</p>
       <p class="trip-price">
-        Price: {{ Number(trip.price).toLocaleString() }} SYP
+        Bus Type: {{ trip.bus.type ? trip.bus.type : "Economic" }}
+      </p>
+      <p class="trip-price">
+        Your ballance: {{ Number(Ballance).toLocaleString() }}
       </p>
     </div>
 
@@ -22,12 +26,12 @@
           class="seat"
           :class="{
             selected: selectedSeats.includes(seat.id),
-            booked: seat.booked,
+            booked: seat.status == 0,
           }"
-          :disabled="seat.booked"
+          :disabled="seat.status == 0"
           @click="toggleSeat(seat.id)"
         >
-          {{ seat.id }}
+          {{ seat.number }}
         </button>
       </div>
     </div>
@@ -37,7 +41,9 @@
       <h3>Selected Seats</h3>
       <p v-if="!selectedSeats.length">No seats selected.</p>
       <ul>
-        <li v-for="id in selectedSeats" :key="id">Seat {{ id }}</li>
+        <li v-for="id in selectedSeats" :key="id">
+          Seat {{ seats.find((s) => s.id === id)?.number }}
+        </li>
       </ul>
       <button
         v-if="selectedSeats.length"
@@ -96,23 +102,11 @@ import GlobalModal from "@/components/Elements/GlobalPopupModal.vue";
 const trip = ref(null);
 const seats = ref([]);
 const selectedSeats = ref([]);
-
+const Ballance = ref(0);
 const showModal = ref(false);
 const modalMode = ref(null);
 const successMessage = ref("");
 const errorMessage = ref("");
-
-// Generate seats based on trip.available_seats or total
-function generateSeats(total = 50, bookedCount = 0) {
-  const seatArray = [];
-  for (let i = 1; i <= total; i++) {
-    seatArray.push({
-      id: i,
-      booked: i <= bookedCount, // mark first seats as booked (demo)
-    });
-  }
-  return seatArray;
-}
 
 function toggleSeat(id) {
   if (selectedSeats.value.includes(id)) {
@@ -163,6 +157,43 @@ async function confirmBooking() {
   }
 }
 
+async function fetchMe() {
+  const { success, data, error } = await store.dispatch(
+    "makeGetRequest",
+    store.state.server + "api/user/me"
+  );
+
+  if (success) {
+    // assuming API returns { rate: number }
+    Ballance.value = Number(data.data.balance || 0);
+  } else {
+    console.error("Failed to fetch profile:", error);
+  }
+}
+
+async function FeatchSeats() {
+  try {
+    const { success, data, error } = await store.dispatch(
+      "makeGetRequest",
+      store.state.server + `api/trips/${trip.value.id}`
+    );
+
+    if (success) {
+      seats.value = data.data.bus.seats;
+      seats.value.sort((a, b) => Number(a.number) - Number(b.number));
+
+      successMessage.value = `Booking successful! Reference: `;
+      modalMode.value = "success";
+    } else {
+      errorMessage.value = "Booking failed: " + (error || "Unknown error.");
+      modalMode.value = "error";
+    }
+  } catch (err) {
+    errorMessage.value = "Booking failed: " + err.message;
+    modalMode.value = "error";
+  }
+}
+
 function closeModal() {
   showModal.value = false;
   modalMode.value = null;
@@ -185,12 +216,8 @@ onMounted(() => {
       ? store.state.trip
       : JSON.parse(localStorage.getItem("trip"));
 
-  if (trip.value) {
-    // Example: total 50 seats, (total - available) are booked
-    const total = 50;
-    const bookedCount = total - trip.value.available_seats;
-    seats.value = generateSeats(total, bookedCount);
-  }
+  FeatchSeats();
+  fetchMe();
 });
 </script>
 

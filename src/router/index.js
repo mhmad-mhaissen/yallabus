@@ -18,6 +18,11 @@ import SeatsView from "@/views/Dashboards/CompanyDashboard/SeatsView.vue";
 import TripsView from "@/views/Dashboards/CompanyDashboard/TripsView.vue";
 import CheckTrips from "@/views/Trips/CheckTrips.vue";
 import TripBook from "@/views/Trips/TripBook.vue";
+import WalletView from "@/views/Wallet/WalletView.vue";
+import MyTrips from "@/views/Trips/MyTrips.vue";
+import ReviewsView from "@/views/Dashboards/SupportDashboard/ReviewsView.vue";
+import ComplaintsView from "@/views/Dashboards/SupportDashboard/ComplaintsView.vue";
+import BookingsView from "@/views/Dashboards/CompanyDashboard/BookingsView.vue";
 
 const routes = [
   {
@@ -114,6 +119,31 @@ const routes = [
     path: "/trip-info",
     name: "TripBook",
     component: TripBook,
+  },
+  {
+    path: "/my-wallet",
+    name: "WalletView",
+    component: WalletView,
+  },
+  {
+    path: "/bookings",
+    name: "MyTrips",
+    component: MyTrips,
+  },
+  {
+    path: "/reviews",
+    name: "ReviewsView",
+    component: ReviewsView,
+  },
+  {
+    path: "/complaints",
+    name: "ComplaintsView",
+    component: ComplaintsView,
+  },
+  {
+    path: "/company-bookings",
+    name: "BookingsView",
+    component: BookingsView,
   },
 ];
 

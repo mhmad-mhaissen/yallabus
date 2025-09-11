@@ -4,13 +4,17 @@
       <thead>
         <tr>
           <th v-for="title in titles" :key="title">{{ title }}</th>
-          <th v-if="hasActions">Actions</th>
+          <!-- Show Actions column if default OR custom actions exist -->
+          <th v-if="hasActions || $slots.customActions">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(row, rowIndex) in data" :key="rowIndex">
           <td v-for="key in keys" :key="key">{{ getNestedValue(row, key) }}</td>
-          <td v-if="hasActions" class="actions-cell">
+
+          <!-- Render default actions OR custom slot -->
+          <td v-if="hasActions || $slots.customActions" class="actions-cell">
+            <!-- Default actions -->
             <button
               v-if="can(`update_${model}`)"
               class="btn edit"
@@ -32,13 +36,19 @@
             >
               View
             </button>
-            <slot name="customActions" :item="row" />
+
+            <!-- ✅ Custom actions slot -->
+            <slot
+              name="customActions"
+              :item="row"
+              :emitAction="(action) => $emit(action, row)"
+            />
           </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- ✅ Pagination (only if prop provided) -->
+    <!-- Pagination -->
     <div v-if="pagination" class="pagination">
       <button
         class="page-btn"
@@ -72,10 +82,19 @@ const props = defineProps({
   keys: Array,
   data: Array,
   model: String,
-  pagination: Object, // ✅ new optional prop
+  pagination: Object,
 });
 
-const emit = defineEmits(["edit", "delete", "view", "page-changed"]);
+// ✅ Register all events we may need
+const emit = defineEmits([
+  "edit",
+  "delete",
+  "view",
+  "cancel",
+  "review",
+  "complaint",
+  "page-changed",
+]);
 
 const store = useStore();
 const permissions = computed(() => store.state.permissions || []);
@@ -92,7 +111,6 @@ function getNestedValue(obj, path) {
     .reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : ""), obj);
 }
 
-// ✅ Handle pagination clicks
 function changePage(page) {
   emit("page-changed", page);
 }
@@ -160,7 +178,7 @@ function changePage(page) {
   background-color: var(--color-primary-dark);
 }
 
-/* ✅ Pagination styles */
+/* Pagination */
 .pagination {
   margin-top: 1rem;
   display: flex;
@@ -187,5 +205,9 @@ function changePage(page) {
 }
 .page-info {
   font-size: 0.9rem;
+}
+.btn.resolve {
+  background-color: #2ecc71; /* Green */
+  color: #fff;
 }
 </style>
